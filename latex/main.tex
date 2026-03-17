@@ -1,0 +1,151 @@
+\documentclass[a4paper, 12pt]{article} % Changed to a4paper
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+% --- Layout & Paragraph Spacing ---
+\usepackage[margin=2.5cm]{geometry} % Better margin control
+\usepackage{parskip}                % Fixes indentation and adds paragraph spacing
+\usepackage{hyperref}               % Makes citations and DOIs clickable
+\usepackage{pgfgantt}               % Gantt chart support
+% --- Header and Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Uppsala University}
+\rhead{Thesis Proposal}            % Added a right head for balance
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\begin{document}
+\begin{titlepage}
+\begin{figure}
+   \begin{center}
+     \includegraphics[scale=0.5]{Images/UU_LOGO.png}
+   \end{center}
+\end{figure}
+\thispagestyle{fancy}
+\vspace{1in}
+\center
+\textsc{\large BACHELOR THESIS SPECIFICATION} %Change to Bachelor if applicable
+\vspace{0.5in}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{1.2pt}}
+\textsc{ \textbf{\large Detecting Structured Data Quality Violations in Retail Datasets }}
+\noindent\makebox[\linewidth]{\rule{\linewidth}{1.2pt}}
+\vspace{0.5in}
+\begin{minipage}[t]{0.48\textwidth}
+    \begin{flushleft}
+        \textit{Student:} \\
+        Muhammad Saad\\
+        muhammad.saad.3667@student.uu.se\\
+    \end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.48\textwidth}
+    \begin{flushright}
+    \textit{Supervisor:} \\
+    Paulina Kristiansson\\
+    paulina.kristiansson@wolt.com \\[0.3cm]
+    \includegraphics[height=5cm]{Images/paulina_signatur.png}
+    \end{flushright}
+\end{minipage}
+\vspace{.5in}
+\textbf{\large Department of Information Technology} \\
+\today
+\end{titlepage}
+\newpage
+\setcounter{page}{2}
+\tableofcontents
+\newpage
+\section{Abstract}
+High-quality structured product data is essential for modern retail operations, yet maintaining internal consistency remains a persistent challenge. Retail datasets frequently contain latent violations such as domain errors, range inconsistencies, completeness issues, and cross-field logical contradictions, which can negatively affect downstream analytics and operational decision-making.
+This thesis investigates how statistical and unsupervised machine learning methods can detect such internal data quality violations without relying on external reference sources. Using a controlled experimental design, synthetic violations will be systematically injected into a structured retail dataset to create a labeled benchmark for evaluation.
+A deterministic rule-based validation approach will be compared against statistical methods and unsupervised algorithms, specifically Isolation Forest and Local Outlier Factor (LOF). The methods will be evaluated using precision, recall, F1-score, and computational latency.
+The goal of the study is to analyze the strengths and limitations of each approach and to provide guidance on when statistical or unsupervised methods are suitable for structured retail data validation.
+\section{Research Question}
+The primary research question guiding this thesis is:
+\textit{How effectively can statistical and unsupervised machine learning methods detect structured data quality violations in retail product datasets?}
+To answer this question, the study evaluates detection performance across distinct violation categories, including domain errors, range inconsistencies, completeness issues, and cross-field logical contradictions. The approaches will be compared against a deterministic rule-based baseline under varying levels of injected noise. In addition to detection accuracy, computational efficiency will be analyzed in order to assess the trade-offs between robustness and practical applicability in retail data validation environments.
+\section{Background}
+Modern retail systems rely on large structured product datasets containing identifiers, pricing information, VAT categories, and physical measures. The quality of this metadata is critical for operational reliability, analytics, and business decision-making. Foundational research emphasizes that data quality extends beyond simple accuracy and directly influences organizational performance \cite{wang1996beyond, pipino2002data}. Despite automated data integration pipelines and standardized suppliers, structured retail datasets frequently contain internal inconsistencies such as missing mandatory attributes, domain violations, range outliers, and cross-field logical contradictions. These challenges are closely related to classical data cleaning and constraint validation problems \cite{rahm2000data, fan2008dependencies}.
+From a methodological perspective, detecting such violations can be formulated as an anomaly detection problem. Anomaly detection methods are commonly categorized into statistical, distance-based, and machine learning approaches \cite{chandola2009anomaly, aggarwal2017outlier, pang2021deep}. Among unsupervised techniques, Isolation Forest \cite{liu2008isolation} isolates anomalies through recursive partitioning, while Local Outlier Factor (LOF) \cite{breunig2000lof} identifies deviations based on local density differences. Both methods are widely studied for high-dimensional tabular data and provide flexible alternatives to rigid rule-based validation systems.
+Although anomaly detection has been extensively studied in domains such as fraud detection, network monitoring, and sensor systems, fewer studies systematically evaluate these methods in the context of structured retail product validation. Retail metadata exhibits strong structural dependencies between attributes, making certain violation types particularly challenging to detect without explicit rules. This thesis addresses this gap by conducting a controlled comparative evaluation of statistical and unsupervised methods, focusing specifically on their ability to detect structurally defined data quality violations in retail datasets.
+\section{Methodology and Task Description}
+The research will follow a structured experimental pipeline, beginning with a systematic literature review of anomaly detection and data quality validation frameworks. This phase establishes the theoretical grounding for statistical methods, deterministic rule-based validation, and unsupervised machine learning techniques \cite{chandola2009anomaly, aggarwal2017outlier}. The review will identify established evaluation strategies and relevant benchmarks for comparing detection efficacy within structured data environments.
+Following the literature review, a retail product dataset will be formalized through a schema comprising numerical, categorical, and identifier-based attributes. Within this framework, explicit data quality constraints, including domain restrictions, range boundaries, completeness requirements, and cross-field logical dependencies will be defined based on established database research principles \cite{rahm2000data, fan2008dependencies}. To ensure objective and reproducible evaluation, controlled data quality violations will be systematically injected into a clean baseline dataset, creating a labeled ground truth for benchmarking.
+The implementation phase will evaluate a deterministic rule-based baseline against statistical techniques and unsupervised machine learning models, specifically Isolation Forest \cite{liu2008isolation} and Local Outlier Factor \cite{breunig2000lof}. The system will be implemented in Python using libraries such as Pandas and NumPy for data processing and Scikit-learn for statistical and machine learning models. Unlike the rule-based baseline, the statistical and unsupervised approaches will be required to identify violations without explicit rule encoding, allowing an assessment of their ability to detect latent structural deviations.
+Detection performance will be quantified using precision, recall, F1-score, and false positive rate, in addition to computational latency to evaluate scalability. The final stage of the thesis consists of a comparative analysis of results across violation categories and noise levels. The core analytical contribution of this work lies in the controlled benchmarking of detection robustness across structurally distinct data quality violations.
+The project fulfils the requirements of a 15 hp Bachelor thesis by combining theoretical analysis, independent experimental design, implementation of machine learning models, and empirical evaluation under controlled conditions.
+\section{Methods}
+\subsection{Dataset Construction and Violation Injection}
+The experimental dataset will consist of a structured tabular representation of retail product records. The schema will include numerical, categorical, and identifier-based attributes such as Global Trade Item Numbers (GTIN), price information, volumetric measures, and VAT classifications. In accordance with established data quality frameworks \cite{rahm2000data, fan2008dependencies}, the dataset will be governed by explicitly defined constraints, including domain integrity, range boundaries, completeness requirements, and multi-field logical dependencies.
+To enable quantitative evaluation, controlled violations will be injected into a clean baseline dataset. These violations will be categorized into distinct classes: completeness errors (missing mandatory values), domain violations (invalid categorical entries), numerical range outliers, and cross-field logical contradictions. This structured injection process creates a labeled benchmark that allows systematic measurement of detection performance across error categories and noise levels.
+\subsection{Detection Methodologies}
+Three approaches will be implemented and compared:
+\begin{enumerate}
+    \item \textbf{Deterministic Rule-Based Validation:} A constraint-driven baseline derived directly from the predefined schema rules. This method explicitly encodes all known validation logic and serves as a reference model.
+
+    \item \textbf{Statistical Detection:} Distribution-based techniques that identify deviations from expected attribute behavior, for example through z-score thresholds or statistical profiling \cite{aggarwal2017outlier}. These methods do not rely on manually specified cross-field rules.
+
+    \item \textbf{Unsupervised Machine Learning:} Isolation Forest \cite{liu2008isolation} and Local Outlier Factor (LOF) \cite{breunig2000lof} will be applied to multidimensional feature representations. Isolation Forest detects anomalies through recursive partitioning, while LOF measures local density deviations relative to nearest neighbors.
+\end{enumerate}
+\subsection{Performance Metrics and Evaluation}
+Detection performance will be evaluated using precision, recall, F1-score, and false positive rate (FPR) \cite{chandola2009anomaly}. Since the injected violations provide ground truth labels, the evaluation will follow a supervised benchmarking protocol despite the unsupervised nature of the models.
+In addition to detection accuracy, computational latency will be measured to assess scalability in batch-processing retail environments. The comparative analysis will examine robustness across violation categories and varying noise proportions, highlighting trade-offs between deterministic precision and probabilistic flexibility.
+\section{Relevant Courses}
+\begin{itemize}
+    \item 1DL034 - Introduction to Machine Learning
+    \item 1DL301 - Database Design I
+    \item 1DL231 - Algorithms and Data Structures II
+    \item 1MS321 - Probability and Statistics DV
+    \item 1DL221 - Imperative and Object-Oriented Programming Methodology
+\end{itemize}
+\section{Delimitations}
+To maintain a feasible scope for a 15 hp Bachelor thesis, several limitations are established.
+The study is restricted to structured, tabular retail product data and does not include unstructured datasets, free-text descriptions, or Natural Language Processing (NLP) techniques. The focus is exclusively on internal data consistency and logical constraints within a defined schema. External verification against authoritative data sources (e.g., GS1) and legal regulatory compliance assessment are outside the scope of this work.
+From a methodological perspective, the evaluation is confined to deterministic rule-based validation, statistical detection techniques, and unsupervised machine learning methods, specifically Isolation Forest and Local Outlier Factor. Supervised learning, deep learning architectures, and advanced ensemble techniques are not included. Furthermore, the study considers batch-processing scenarios only; real-time or streaming validation systems are not addressed.
+The outcome of the thesis will be a comparative experimental analysis rather than a production-ready software system. No confidential business metrics or proprietary internal datasets will be used, ensuring that the research remains reproducible and non-sensitive.
+\section{Ethical Considerations}
+The experimental dataset used in this study will be synthetically constructed and will not contain any personal data, customer information, or confidential business metrics. All data quality violations will be artificially injected into a controlled baseline, ensuring that no real-world records are misrepresented or exposed. As the study does not involve human subjects, surveys, or personally identifiable information, no ethical review board approval is required. The research is designed to be fully reproducible using open-source tools and non-sensitive data.
+\section{Time Plan}
+The project is planned as a ten-week full-time effort from \textbf{1 September 2026} to \textbf{7 November 2026} (HT26, Period 1), structured to balance theoretical development, implementation, experimentation, and writing.
+During Weeks 1--2 (1--12 Sep), the focus will be on literature review and theoretical grounding in anomaly detection and data quality validation. The research questions and experimental framework will be finalized during this phase. Week 3 (15--19 Sep) will be dedicated to formalizing the dataset schema and specifying the internal data quality constraints.
+Implementation of the experimental framework will take place during Weeks 4--5 (22 Sep -- 3 Oct), including development of the deterministic baseline, statistical detection models, and unsupervised machine learning methods (Isolation Forest and LOF). In Week 6 (6--10 Oct), controlled violations will be injected and the benchmarking experiments will be executed. Week 7 (13--17 Oct) will focus on analyzing experimental results, evaluating performance metrics, and interpreting findings.
+Thesis writing will be conducted continuously in parallel with implementation and experimentation. However, Weeks 8--9 (20 Oct -- 31 Oct) will primarily be dedicated to drafting and refining the full thesis manuscript. Week 10 (3--7 Nov) will be reserved for final revisions, formatting, and preparation for the defense presentation.
+Regular meetings with the subject reviewer will be scheduled at approximately 25\% (Week 3), 50\% (Week 5), and 75\% (Week 8) completion of the project to ensure steady progress and alignment. Communication between scheduled meetings will primarily occur via email.
+\vspace{0.5cm}
+\begin{figure}[h!]
+\centering
+\begin{ganttchart}[
+    hgrid,
+    vgrid,
+    x unit=1.05cm,
+    y unit title=0.6cm,
+    y unit chart=0.55cm,
+    title height=1,
+    bar height=0.6,
+    bar label font=\small,
+    title label font=\small,
+    milestone label font=\small\itshape,
+    group label font=\small\bfseries,
+    bar/.append style={fill=blue!30},
+    group/.append style={fill=blue!10},
+    milestone/.append style={fill=red!60}
+]{1}{10}
+\gantttitle{Week}{10} \\
+\gantttitlelist{1,...,10}{1} \\
+\ganttbar{Literature Review}{1}{2} \\
+\ganttbar{Schema \& Constraints}{3}{3} \\
+\ganttbar{Implementation}{4}{5} \\
+\ganttbar{Experiments}{6}{6} \\
+\ganttbar{Analysis}{7}{7} \\
+\ganttbar{Thesis Writing}{3}{10} \\
+\ganttbar{Revisions \& Defense Prep}{10}{10} \\
+\ganttmilestone{Reviewer Meeting (25\%)}{3} \\
+\ganttmilestone{Reviewer Meeting (50\%)}{5} \\
+\ganttmilestone{Reviewer Meeting (75\%)}{8}
+\end{ganttchart}
+\caption{Project Gantt chart with reviewer meeting milestones.}
+\label{fig:gantt}
+\end{figure}
+\bibliography{sources}
+\bibliographystyle{IEEEtran}
+\end{document}
